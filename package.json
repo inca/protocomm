@@ -46,6 +46,6 @@
     "dependencies": {
         "typesafe-event": "^1.0.1",
         "typesafe-exception": "^1.0.1",
-        "typesafe-json-schema": "^0.1.3"
+        "typesafe-json-schema": "^0.3.0"
     }
 }
