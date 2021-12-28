@@ -1,6 +1,6 @@
 {
     "name": "protocomm",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Bi-directional type-safe RPC and events for Node.js and Browser",
     "main": "out/main/index.js",
     "types": "out/main/index.d.ts",
