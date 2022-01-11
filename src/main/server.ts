@@ -1,6 +1,5 @@
 import { Event } from 'typesafe-event';
 import { Exception } from 'typesafe-exception';
-import { Schema } from 'typesafe-json-schema';
 
 import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './messages';
 import { ServiceRegistry } from './registry';
@@ -8,7 +7,6 @@ import { ServiceDef, ServiceMethodDef } from './service';
 import { RpcTransport } from './transport';
 
 export class ServiceServer {
-    schemaCache: Map<object, Schema<any>> = new Map();
 
     constructor(
         public transport: RpcTransport,
@@ -41,15 +39,15 @@ export class ServiceServer {
             if (!methodDef) {
                 throw new MethodNotFound(`Unknown method ${service}.${method}`);
             }
-            const reqSchema = this.getSchema(methodDef.params);
-            const resSchema = this.getSchema(methodDef.returns);
+            const reqSchema = this.registry.getDecoder(methodDef.params);
+            const resSchema = this.registry.getDecoder(methodDef.returns);
             const decodedParams = reqSchema.decode(params);
             const res = await impl[method](decodedParams);
             return {
                 id,
                 result: resSchema.decode(res),
             };
-        } catch (err) {
+        } catch (err: any) {
             return {
                 id,
                 error: {
@@ -66,23 +64,13 @@ export class ServiceServer {
         params: any,
     ) {
         const eventDef = serviceDef.events[eventName];
-        const eventSchema = this.getSchema(eventDef.params);
+        const eventSchema = this.registry.getDecoder(eventDef.params);
         const encodedParams = eventSchema.decode(params);
         const payload: RpcEvent = {
             event: eventName,
             params: encodedParams,
         };
         this.transport.messageSent.emit(JSON.stringify(payload));
-    }
-
-    getSchema(def: any): Schema<any> {
-        const cached = this.schemaCache.get(def);
-        if (cached) {
-            return cached;
-        }
-        const schema = new Schema<any>(def);
-        this.schemaCache.set(def, schema);
-        return schema;
     }
 
 }

@@ -42,7 +42,6 @@ export class ServiceClient<S> {
         }
         return async (req: Req) => {
             this.id = (this.id + 1) % Number.MAX_SAFE_INTEGER;
-            // TODO add opt-in client validation
             const rpcPayload: RpcMethodRequest = {
                 id: this.id,
                 service: serviceName,
@@ -101,7 +100,6 @@ export class ServiceClient<S> {
         if (!event) {
             return;
         }
-        // TODO add opt-in client validation
         event.emit(res.params);
     }
 

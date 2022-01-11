@@ -44,8 +44,8 @@
         "ws": "^7.5.3"
     },
     "dependencies": {
+        "airtight": "^0.4.0",
         "typesafe-event": "^1.0.1",
-        "typesafe-exception": "^1.0.1",
-        "typesafe-json-schema": "^0.3.0"
+        "typesafe-exception": "^1.0.1"
     }
 }

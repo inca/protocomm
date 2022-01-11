@@ -1,11 +1,11 @@
-import { JsonSchema } from 'typesafe-json-schema';
+import { Schema } from 'airtight';
 
 export interface RpcError {
     name: string;
     message: string;
 }
 
-export const RpcError: JsonSchema<RpcError> = {
+export const RpcError: Schema<RpcError> = {
     type: 'object',
     properties: {
         name: { type: 'string' },
@@ -20,7 +20,7 @@ export interface RpcMethodRequest {
     params: any;
 }
 
-export const RpcMethodRequest: JsonSchema<RpcMethodRequest> = {
+export const RpcMethodRequest: Schema<RpcMethodRequest> = {
     type: 'object',
     properties: {
         id: { type: 'number' },
@@ -36,7 +36,7 @@ export interface RpcMethodResponse {
     error?: RpcError;
 }
 
-export const RpcMethodResponse: JsonSchema<RpcMethodResponse> = {
+export const RpcMethodResponse: Schema<RpcMethodResponse> = {
     type: 'object',
     properties: {
         id: { type: 'number' },

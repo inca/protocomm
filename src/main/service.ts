@@ -1,5 +1,5 @@
+import { Schema } from 'airtight';
 import { Event } from 'typesafe-event';
-import { JsonSchema } from 'typesafe-json-schema';
 
 export type Method<Params, Returns> = (params: Params) => Promise<Returns>;
 
@@ -7,6 +7,7 @@ export type ServiceDef<S> = {
     name: string;
     methods: ServiceMethods<S>;
     events: ServiceEvents<S>;
+    types?: Schema<unknown>[];
 }
 
 type IsMethod<S, M extends keyof S> = S[M] extends Method<any, any> ? M : never;
@@ -23,10 +24,10 @@ export type ServiceEvents<S> = {
 }
 
 export type ServiceMethodDef<P, R> = {
-    params: JsonSchema<P>;
-    returns: JsonSchema<R>;
+    params: Schema<P>;
+    returns: Schema<R>;
 }
 
 export type ServiceEventDef<E> = {
-    params: JsonSchema<E>;
+    params: Schema<E>;
 }
